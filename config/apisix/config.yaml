@@ -1,0 +1,11 @@
+# 基于官方 apache/apisix:3.4.0-debian 镜像
+FROM apache/apisix:3.4.0-debian
+
+# 复制自定义配置文件到容器中
+COPY config/apisix/config.yaml /usr/local/apisix/conf/config.yaml
+
+# 确保配置文件权限正确
+RUN chmod 644 /usr/local/apisix/conf/config.yaml
+
+# 保持原有的启动命令
+CMD ["sh", "-c", "/usr/bin/apisix init && /usr/bin/apisix init_etcd && /usr/local/openresty/bin/openresty -p /usr/local/apisix -c /usr/local/apisix/conf/nginx.conf"]
